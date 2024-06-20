@@ -1,0 +1,4 @@
+*
+!.gitignore
+!.example.db.config
+!.example.storage.config
