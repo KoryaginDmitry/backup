@@ -1,3 +1,4 @@
+# Проверка переданного аргумента в срипт
 function checkArgument() {
     if [ -z "$1" ]; then
         error "Не передан ключ конфигурации"
@@ -12,12 +13,14 @@ function checkArgument() {
     fi
 }
 
+# Проверка конфигурации БД
 function checkDBConf() {
   if [[ -z "$CONTAINER_NAME" || -z "$DB_DATABASE" || -z "$DB_USERNAME" || -z "$DB_PASSWORD" ]]; then
     error "Проверь файл конфигурации DB"
   fi
 }
 
+# Проверка конфигурации хранилища файлов
 function checkStorageConf() {
   if [ -z "$STORAGE_TYPE" ]; then
       error "Проверь файл конфигурации хранилища"
@@ -34,6 +37,7 @@ function checkStorageConf() {
   fi
 }
 
+# Проверка создания дампа БД
 function checkDBFile() {
   if [[ ! -f temporary_files/DB/dump.sql || $(stat -c %s temporary_files/DB/dump.sql) -lt 100 ]] ; then
     error "Не удалось сделать дамп БД"
@@ -42,6 +46,7 @@ function checkDBFile() {
   log_info "Дамп БД прошел успешно. Размер файла до архивации - $(stat -c %s temporary_files/DB/dump.sql)байт"
 }
 
+# Проверка получения файлов
 function checkStorageFiles() {
     if [ ! -d temporary_files/Files/ ] ; then
       error "Не удалось собрать файлы для архивации"
@@ -56,6 +61,7 @@ function checkStorageFiles() {
     log_info "Сбор файлов прошел успешно. Размер файлой до архивации - $STORAGE_SIZE"
 }
 
+# Проверка наличия архивов
 function checkArchives() {
     ARCHIVES_COUNT=$(ls -l archives/ | wc -l)
 
@@ -64,4 +70,16 @@ function checkArchives() {
     fi
 
     log_info "Было создано $(("$ARCHIVES_COUNT" - 1)) файла(-ов) архивов"
+}
+
+# Проверка доставки архивов
+function checkDelivery() {
+    ARCH_COUNT=$(( "$(ls -l archives/ | wc -l)" - 1 ))
+    BACKUP_ARCH_COUNT=$(rclone lsf "$1":"$BACKUP_DIR"/"$2" --files-only | wc -l)
+
+    if [ "$ARCH_COUNT" == "$BACKUP_ARCH_COUNT" ] ; then
+        log_info "Все файлы успешно переданы"
+      else
+        log_info "Удалось передать не все файлы. Количество архивов - $ARCH_COUNT. Передано архивов - $BACKUP_ARCH_COUNT"
+    fi
 }

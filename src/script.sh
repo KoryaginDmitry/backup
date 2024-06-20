@@ -49,8 +49,14 @@ DATE=$(date +"%Y_%m_%d")
 # Доставка архивов на яндекс диск
 delivery "$1" "$DATE"
 
+# Проверка доставки
+checkDelivery "$1" "$DATE"
+
+# Удаление архивов
+dropArchives
+
 # Удаление старых архивов с яндекс диска
-#rmOldData $DATE
+rmOldData "$1" "$DATE"
 
 log_info 'Завершил создание бекапа'
 

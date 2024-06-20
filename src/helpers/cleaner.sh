@@ -5,22 +5,24 @@ function dropTmpFiles() {
 }
 
 function dropArchives() {
-    rm arch*
+    rm -rf archives/
 }
 
 function rmOldData() {
-    COUNT=$(rclone lsf yandex:bee_online | wc -l)
-    JSON=$(rclone lsjson yandex:bee_online)
+    COUNT=$(rclone lsf "$1":"$BACKUP_DIR"/"$2"/ | wc -l)
+    JSON=$(rclone lsjson "$1":"$BACKUP_DIR"/"$2"/)
 
-    if echo "$JSON" | jq --exit-status '.[] | select(.Path == "'"$DATE"'")' > /dev/null ; then
-      FILE_SIZE_JSON=$(rclone size --json yandex:bee_online/"$DATE")
+    if echo "$JSON" | jq --exit-status '.[] | select(.Path == "'"$2"'")' > /dev/null ; then
+      HAS_FILE=1
+      FILE_SIZE_JSON=$(rclone size --json "$1":"$BACKUP_DIR"/"$2"/)
       SIZE=$(echo "$FILE_SIZE_JSON" | jq '.bytes')
     else
+      HAS_FILE=0
       SIZE=0
     fi
 
     if [[ "$COUNT" -gt 2 && "$HAS_FILE" == 1 && "$SIZE" -gt 0 ]]; then
-      rclone delete yandex:bee_online --min-age 15d
-      rclone rmdirs yandex:bee_online/
+      rclone delete "$1":"$BACKUP_DIR"/"$2" --min-age "$BACKUP_LIFE"d
+      rclone rmdirs "$1":"$BACKUP_DIR"/"$2"/
     fi
 }
