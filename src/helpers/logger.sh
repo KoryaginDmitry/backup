@@ -7,8 +7,8 @@ function makeMessage() {
 }
 
 function makeDir() {
-  if [ ! -d ../logs/"$LOG_DIR"/ ]; then
-    mkdir -p ../logs/"$LOG_DIR"/
+  if [ ! -d logs/"$LOG_DIR"/ ]; then
+    mkdir -p logs/"$LOG_DIR"/
   fi
 }
 
@@ -16,18 +16,18 @@ function log_info() {
   makeDir
 
   if [[ "$#" == 2 && "$2" == 1 ]]; then
-    echo '' >> ../logs/"$LOG_DIR"/logs.log
+    echo '' >> logs/"$LOG_DIR"/logs.log
   fi
 
-  makeMessage "$1" >> ../logs/"$LOG_DIR"/logs.log
+  makeMessage "$1" >> logs/"$LOG_DIR"/logs.log
 }
 
 function log_error() {
   if [ -n "$LOG_DIR" ]; then
     makeDir
-    makeMessage "$1" >> ../logs/"$LOG_DIR"/logs.log
-    makeMessage "Завершил выполнение скрипта с ошибкой" >> ../logs/"$LOG_DIR"/logs.log
+    makeMessage "$1" >> logs/"$LOG_DIR"/logs.log
+    makeMessage "Завершил выполнение скрипта с ошибкой" >> logs/"$LOG_DIR"/logs.log
   else
-    makeMessage "$1" >> ../logs/logs.log;
+    makeMessage "$1" >> logs/logs.log;
   fi
 }

@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Подключение функций хелперов
-source helpers/checks.sh
-source helpers/data_collector.sh
-source helpers/archiver.sh
-source helpers/cleaner.sh
-source helpers/transmitter.sh
-source helpers/logger.sh
-source helpers/errors.sh
+source src/helpers/checks.sh
+source src/helpers/data_collector.sh
+source src/helpers/archiver.sh
+source src/helpers/cleaner.sh
+source src/helpers/transmitter.sh
+source src/helpers/logger.sh
+source src/helpers/errors.sh
 
 # Проверка корректности ключа переданного в функцию
 checkArgument "$1"
@@ -17,8 +17,8 @@ setLogDir "$1"
 log_info 'Начинаю формировать бекап' 1
 
 # Подключение файлов конфигурации
-source ../config/"$1"/db.config
-source ../config/"$1"/storage.config
+source config/"$1"/db.config
+source config/"$1"/storage.config
 
 # Проверка переменных конфигурации
 checkDBConf

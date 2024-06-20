@@ -1,5 +1,5 @@
 function dropTmpFiles() {
-    rm -rf ../temporary_files
+    rm -rf temporary_files/
 }
 
 function dropArchives() {

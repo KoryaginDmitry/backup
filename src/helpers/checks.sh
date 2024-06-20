@@ -3,12 +3,12 @@ function checkArgument() {
         error "Не передан ключ конфигурации"
     fi
 
-    if [ ! -f ../config/"$1"/db.config ]; then
-      error "Не найден файл ../config/$1/db.config"
+    if [ ! -f config/"$1"/db.config ]; then
+      error "Не найден файл config/$1/db.config"
     fi
 
-    if [ ! -f ../config/"$1"/storage.config ]; then
-      error "Не найден файл ../config/$1/storage.config"
+    if [ ! -f config/"$1"/storage.config ]; then
+      error "Не найден файл config/$1/storage.config"
     fi
 }
 
@@ -35,17 +35,23 @@ function checkStorageConf() {
 }
 
 function checkDBFile() {
-  if [[ ! -f ../temporary_files/DB/dump.sql || $(stat -c %s ../temporary_files/DB/dump.sql) -lt 100 ]] ; then
+  if [[ ! -f temporary_files/DB/dump.sql || $(stat -c %s temporary_files/DB/dump.sql) -lt 100 ]] ; then
     error "Не удалось сделать дамп БД"
   fi
 
-  log_info "Дамп БД прошел успешно. Размер файла до архивации - $(stat -c %s ../temporary_files/DB/dump.sql)байт"
+  log_info "Дамп БД прошел успешно. Размер файла до архивации - $(stat -c %s temporary_files/DB/dump.sql)байт"
 }
 
 function checkStorageFiles() {
-    if [[ ! -d ../temporary_files/Files/ || $(stat -c %s ../temporary_files/Files/) -lt 100 ]] ; then
+    if [ ! -d temporary_files/Files/ ] ; then
       error "Не удалось собрать файлы для архивации"
     fi
 
-    log_info "Сбор файлов прошел успешно. Размер файлой до архивации - $(stat -c %s ../temporary_files/Files/)байт"
+    STORAGE_SIZE=$(du -sh temporary_files/Files/ | awk '{print $1}')
+
+    if [ "$(echo "$STORAGE_SIZE" | tr -cd '0-9')" -lt 4 ] ; then
+      error 'Слишком маленький рзмер файлов'
+    fi
+
+    log_info "Сбор файлов прошел успешно. Размер файлой до архивации - $STORAGE_SIZE"
 }
