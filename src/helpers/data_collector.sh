@@ -5,16 +5,8 @@ function db_collect() {
 
 function storage_collect() {
   if [ "$STORAGE_TYPE" == 'FILE' ]; then
-        files``
+        cp -r "$STORAGE_PATH" ../temporary_files/Files/
       else
-        minio
+        (docker cp "$STORAGE_CONTAINER_NAME":/data/minio/"$STORAGE_AWS_BUCKET"/. ../temporary_files/Files) > /dev/null 2>&1
   fi
-}
-
-function files() {
-  cp -r "$STORAGE_PATH" ../temporary_files/Files/
-}
-
-function minio() {
-    docker cp "$STORAGE_CONTAINER_NAME":/data/minio/"$STORAGE_AWS_BUCKET"/. ../temporary_files/Files
 }
