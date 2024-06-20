@@ -19,6 +19,7 @@ log_info 'Начинаю формировать бекап' 1
 # Подключение файлов конфигурации
 source config/"$1"/db.config
 source config/"$1"/storage.config
+source config/"$1"/backup.config
 
 # Проверка переменных конфигурации
 checkDBConf
@@ -43,10 +44,10 @@ checkArchives
 dropTmpFiles
 
 # Записываем текщую дату в переменную
-#DATE=$(date +"%Y_%m_%d")
+DATE=$(date +"%Y_%m_%d")
 
 # Доставка архивов на яндекс диск
-#delivery "$DATE"
+delivery "$1" "$DATE"
 
 # Удаление старых архивов с яндекс диска
 #rmOldData $DATE
