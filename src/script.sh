@@ -24,6 +24,7 @@ source config/"$1"/backup.config
 # Проверка переменных конфигурации
 checkDBConf
 checkStorageConf
+checkBackupConf
 
 # Формируем данные для архивации
 db_collect

@@ -11,6 +11,10 @@ function checkArgument() {
     if [ ! -f config/"$1"/storage.config ]; then
       error "Не найден файл config/$1/storage.config"
     fi
+
+    if [ ! -f config/"$1"/backup.config ]; then
+      error "Не найден файл config/$1/backup.config"
+    fi
 }
 
 # Проверка конфигурации БД
@@ -35,6 +39,13 @@ function checkStorageConf() {
       error "Некорректная конфигурация для драйвера MINIO"
     fi
   fi
+}
+
+# Проверка файла конфигурации бэкапа
+function checkBackupConf() {
+    if [[ -z "$BACKUP_DIR" || -z "$BACKUP_LIFE" ]]; then
+      error "Проверь файл конфигурации бэкапа"
+    fi
 }
 
 # Проверка создания дампа БД

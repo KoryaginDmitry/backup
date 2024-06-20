@@ -1,13 +1,18 @@
+# Удаление временных файлов
 function dropTmpFiles() {
     rm -rf temporary_files/
 
     log_info "Временные файлы удалены"
 }
 
+# Удаление архивов
 function dropArchives() {
     rm -rf archives/
+
+    log_info "Архивы удалены"
 }
 
+# Удаление старых бэкапов
 function rmOldData() {
     COUNT=$(rclone lsf "$1":"$BACKUP_DIR"/"$2"/ | wc -l)
     JSON=$(rclone lsjson "$1":"$BACKUP_DIR"/"$2"/)
@@ -22,6 +27,8 @@ function rmOldData() {
     fi
 
     if [[ "$COUNT" -gt 2 && "$HAS_FILE" == 1 && "$SIZE" -gt 0 ]]; then
+      log_info "Удаляю старые бекапы"
+
       rclone delete "$1":"$BACKUP_DIR"/"$2" --min-age "$BACKUP_LIFE"d
       rclone rmdirs "$1":"$BACKUP_DIR"/"$2"/
     fi
