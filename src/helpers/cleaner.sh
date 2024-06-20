@@ -1,5 +1,7 @@
 function dropTmpFiles() {
     rm -rf temporary_files/
+
+    log_info "Временные файлы удалены"
 }
 
 function dropArchives() {

@@ -33,17 +33,20 @@ checkDBFile
 checkStorageFiles
 
 # Создание архивов
-#makeFilesArchives
-#makeDBArchives
+makeFilesArchives
+makeDBArchives
+
+# Проверка архивов
+checkArchives
 
 # Очистка временных файлов
-#dropTmpFiles
+dropTmpFiles
 
 # Записываем текщую дату в переменную
 #DATE=$(date +"%Y_%m_%d")
 
 # Доставка архивов на яндекс диск
-#delivery $DATE
+#delivery "$DATE"
 
 # Удаление старых архивов с яндекс диска
 #rmOldData $DATE

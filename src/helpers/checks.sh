@@ -55,3 +55,13 @@ function checkStorageFiles() {
 
     log_info "Сбор файлов прошел успешно. Размер файлой до архивации - $STORAGE_SIZE"
 }
+
+function checkArchives() {
+    ARCHIVES_COUNT=$(ls -l archives/ | wc -l)
+
+    if [ "$ARCHIVES_COUNT" -lt 2 ] ; then
+      error "Ошибка создания архивовов"
+    fi
+
+    log_info "Было создано $(("$ARCHIVES_COUNT" - 1)) файла(-ов) архивов"
+}
