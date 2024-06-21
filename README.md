@@ -31,3 +31,7 @@
    ```shell
       ./src/script.sh your_rclone_config_name
    ```
+   Пример запуска из cron. Скрипт запускается в два часа ночи каждый понедельник
+   ```shell
+     0 2 * * 1 cd /home/<your_user>/scripts/backup/ && ./src/script.sh <your_rclone_config_name>
+   ```
