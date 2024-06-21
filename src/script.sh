@@ -26,12 +26,15 @@ checkDBConf
 checkStorageConf
 checkBackupConf
 
-# Формируем данные для архивации
-db_collect
-storage_collect
+# Очистка временных файлов
+dropTmpFiles
 
-# Проверка собранных данных
+# Делаем дамп БД и проверяем его
+db_collect
 checkDBFile
+
+# Собираем файлы и проверяем результат сбора
+storage_collect
 checkStorageFiles
 
 # Создание архивов

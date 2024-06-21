@@ -1,7 +1,7 @@
 # Получение дампа БД
 function db_collect() {
   mkdir -p temporary_files/DB
-  docker exec -it "$CONTAINER_NAME" mysqldump -u "$DB_USERNAME" --password="$DB_PASSWORD" "$DB_DATABASE" > temporary_files/DB/dump.sql
+  docker exec "$CONTAINER_NAME" mysqldump -u "$DB_USERNAME" --password="$DB_PASSWORD" "$DB_DATABASE" > temporary_files/DB/dump.sql 2>&1
 }
 
 # Получение файлов
